@@ -1,7 +1,7 @@
 
 Example module for creating posts/body content 
 
-[Downloading CKEditor with a package manager](https://docs.ckeditor.com/ckeditor4/docs/#!/guide/dev_package_managers)
+[react-draft-wysiwyg](https://jpuri.github.io/react-draft-wysiwyg/#/)
 
 
 
