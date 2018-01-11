@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.1",
     "draft-js": "^0.10.4",
     "immutable": "^3.8.2",
     "react": "^16.2.0",
