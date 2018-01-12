@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 // Use the Promise functionality built into Node.js
 mongoose.Promise = global.Promise
