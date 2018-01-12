@@ -1,7 +1,6 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
-
+// if (process.env.NODE_ENV !== 'production') {
+//   require('dotenv').config()
+// }
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -19,6 +18,10 @@ server.use((error, req, res, next) => {
     }
   })
 })
+
+server.use([
+  require('./routes/announcements'),
+])
 
 server.listen(8000, (error) => {
   if (error) {
