@@ -1,23 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Editor } from 'react-draft-wysiwyg'
-import { convertFromRaw } from 'draft-js'
+import { convertToRaw } from 'draft-js'
 import '../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html'
-import { createAnnouncement } from './api/announcements'
-
-// Output from sending email:
-
-// {
-//   subject: 'some string';
-//   created_at: new Date(); is this necessary with mongodb / embedded timestamp?
-//   content: contentState
-// }
+import { listAnnouncements, createAnnouncement } from './api/announcements'
 
 class App extends Component {
   state = {
     contentState: null,
-    announcements: null
+    announcements: []
   }
 
   onContentStateChange = (contentState) => {
@@ -29,16 +21,19 @@ class App extends Component {
       .then((newAnnouncement) => {
         this.setState((prevState) => {
           const updatedAnnouncements = prevState.announcements.concat(newAnnouncement)
+          // const updatedAnnouncements = [...announcements, newAnnouncement]
           return {
             announcements: updatedAnnouncements
           }
         })
       })
+      .catch((error) => {
+        this.setState({ error })
+      })
   }
 
   render() {
-    const { contentState, announcements } = this.state
-    console.log(contentState)
+    const { contentState, announcements, error } = this.state
 
     return (
       <div className="App">
@@ -51,12 +46,14 @@ class App extends Component {
  
             const elements = event.target.elements
             const subject = elements.subject.value
-            const content = convertFromRaw(contentState)
+            const contentData = draftToHtml(contentState)
 
             const announcement = {
               subject: subject,
-              content: contentState
+              contentData: contentData
             }
+
+            this.onCreateAnnouncement(announcement)
           }}
         >
         <div className="subject">
@@ -82,11 +79,29 @@ class App extends Component {
         <div>
           <h3>Announcements</h3>
           {
-            announcements ? (1) : (0)
+            announcements.length ? (announcements.map((announcement) => {
+              <div>
+                <h6>{ announcement.subject }</h6>
+                <p>{ announcement.contentData }</p>
+              </div>
+            })
+          ) : (
+            <p>No current announcements</p>
+          )
           }
         </div>
       </div>
     );
+  }
+
+  loadData() {
+    listAnnouncements()
+      .then((announcements) => {
+        this.setState
+      })
+  }
+  componentDidMount() {
+    this.loadData()
   }
 }
 
